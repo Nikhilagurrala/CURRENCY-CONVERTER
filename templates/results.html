@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion Results - Currency Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="20" fill="rgba(37,99,235,0.05)">💰💵💸💳💎</text></svg>') repeat,
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Money-themed floating elements */
+        body::before {
+            content: '💰 💵 💸 💳 💎 💰 💵 💸 💳 💎';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.03);
+            z-index: -1;
+            animation: floatMoney 30s infinite linear;
+            pointer-events: none;
+            word-spacing: 15rem;
+            line-height: 12rem;
+        }
+
+        @keyframes floatMoney {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .results-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            padding: 3rem;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success));
+            border-radius: 24px 24px 0 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .conversion-result {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conversion-result::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .result-amount {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-details {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rate-info {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .rate-info h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .rate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .rate-item {
+            background: var(--light-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .rate-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .rate-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .chart-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .chart-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .chart-canvas {
+            height: 300px !important;
+            width: 100% !important;
+        }
+
+        .additional-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .info-card h4 {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-light);
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list li strong {
+            color: var(--text);
+        }
+
+        .new-conversion-btn {
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            border: none;
+            border-radius: 16px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .new-conversion-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .result-amount {
+                font-size: 3rem;
+            }
+
+            .results-card {
+                padding: 2rem;
+            }
+
+            .chart-container {
+                padding: 1.5rem;
+            }
+
+            .chart-canvas {
+                height: 250px !important;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .trend-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        .trend-neutral {
+            color: var(--text-light);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="results-card fade-in">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back to Converter
+            </button>
+
+            <div class="header">
+                <h1><i class="fas fa-chart-line"></i> Conversion Results</h1>
+            </div>
+
+            <div class="conversion-result" id="conversionResult">
+                <div class="result-amount" id="resultAmount">0.00</div>
+                <div class="result-details" id="resultDetails">Loading conversion...</div>
+            </div>
+
+            <div class="rate-info">
+                <h3><i class="fas fa-info-circle"></i> Exchange Rate Information</h3>
+                <div class="rate-grid">
+                    <div class="rate-item">
+                        <div class="rate-value" id="exchangeRate">0.0000</div>
+                        <div class="rate-label">Current Rate</div>
+                    </div>
+                    <div class="rate-item">
+                        <div class="rate-value" id="conversionTime">Now</div>
+                        <div class="rate-label">Last Updated</div>
+                    </div>
+                    <div class="rate-item">
+                        <div class="rate-value" id="rateSource">ECB</div>
+                        <div class="rate-label">Data Source</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">Exchange Rate Trend</h3>
+                    <div class="chart-controls">
+                        <button class="chart-btn active" data-days="7">7 Days</button>
+                        <button class="chart-btn" data-days="14">14 Days</button>
+                        <button class="chart-btn" data-days="30">30 Days</button>
+                    </div>
+                </div>
+                <canvas id="rateChart" class="chart-canvas"></canvas>
+            </div>
+
+            <div class="additional-info">
+                <div class="info-card">
+                    <h4><i class="fas fa-calculator"></i> Conversion Details</h4>
+                    <ul class="info-list">
+                        <li><strong>Amount:</strong> <span id="originalAmount">0</span></li>
+                        <li><strong>From:</strong> <span id="fromCurrency">USD</span></li>
+                        <li><strong>To:</strong> <span id="toCurrency">EUR</span></li>
+                        <li><strong>Rate:</strong> <span id="rateValue">0.0000</span></li>
+                        <li><strong>Result:</strong> <span id="convertedAmount">0.00</span></li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4><i class="fas fa-clock"></i> Timing Information</h4>
+                    <ul class="info-list">
+                        <li><strong>Converted:</strong> <span id="conversionDate">Now</span></li>
+                        <li><strong>Rate Updated:</strong> <span id="rateUpdateTime">Now</span></li>
+                        <li><strong>Next Update:</strong> <span id="nextUpdate">1 hour</span></li>
+                        <li><strong>Data Freshness:</strong> <span id="dataFreshness">Real-time</span></li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h4><i class="fas fa-globe"></i> Currency Information</h4>
+                    <ul class="info-list">
+                        <li><strong>From Country:</strong> <span id="fromCountry">United States</span></li>
+                        <li><strong>To Country:</strong> <span id="toCountry">European Union</span></li>
+                        <li><strong>Currency Symbol:</strong> <span id="currencySymbol">€</span></li>
+                        <li><strong>Market Status:</strong> <span id="marketStatus">Open</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="new-conversion-btn" onclick="goBack()">
+                <i class="fas fa-plus"></i> New Conversion
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        class ResultsPage {
+            constructor() {
+                this.conversionData = null;
+                this.chart = null;
+                this.init();
+            }
+
+            init() {
+                this.loadConversionData();
+                this.setupEventListeners();
+                this.initChart();
+            }
+
+            loadConversionData() {
+                const data = localStorage.getItem('conversionData');
+                if (data) {
+                    this.conversionData = JSON.parse(data);
+                    this.displayResults();
+                } else {
+                    // Redirect back if no data
+                    window.location.href = '/';
+                }
+            }
+
+            displayResults() {
+                if (!this.conversionData) return;
+
+                const { amount, fromCurrency, toCurrency, result, rate, timestamp } = this.conversionData;
+
+                // Display main result
+                document.getElementById('resultAmount').textContent = result.toLocaleString();
+                document.getElementById('resultDetails').textContent = `${amount} ${fromCurrency} = ${result} ${toCurrency}`;
+
+                // Display rate information
+                document.getElementById('exchangeRate').textContent = rate.toFixed(4);
+                document.getElementById('originalAmount').textContent = amount;
+                document.getElementById('fromCurrency').textContent = fromCurrency;
+                document.getElementById('toCurrency').textContent = toCurrency;
+                document.getElementById('rateValue').textContent = rate.toFixed(4);
+                document.getElementById('convertedAmount').textContent = result.toLocaleString();
+
+                // Display timing information
+                const conversionDate = new Date(timestamp);
+                document.getElementById('conversionDate').textContent = conversionDate.toLocaleString();
+                document.getElementById('conversionTime').textContent = conversionDate.toLocaleTimeString();
+                document.getElementById('rateUpdateTime').textContent = conversionDate.toLocaleTimeString();
+
+                // Update chart
+                this.updateChart();
+            }
+
+            setupEventListeners() {
+                // Chart controls
+                document.querySelectorAll('.chart-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.updateChart(parseInt(e.target.dataset.days));
+                    });
+                });
+            }
+
+            initChart() {
+                const ctx = document.getElementById('rateChart').getContext('2d');
+                this.chart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Exchange Rate',
+                            data: [],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: '#2563eb',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#64748b'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#64748b'
+                                }
+                            }
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: 'index'
+                        }
+                    }
+                });
+
+                this.updateChart();
+            }
+
+            async updateChart(days = 7) {
+                if (!this.conversionData) return;
+
+                const { fromCurrency, toCurrency } = this.conversionData;
+
+                try {
+                    const response = await fetch(`/api/chart-data/${fromCurrency}/${toCurrency}?days=${days}`);
+                    const data = await response.json();
+
+                    this.chart.data.labels = data.labels;
+                    this.chart.data.datasets[0].data = data.data;
+                    this.chart.update();
+                } catch (error) {
+                    console.error('Failed to load chart data:', error);
+                }
+            }
+        }
+
+        function goBack() {
+            window.location.href = '/';
+        }
+
+        // Initialize the results page when loaded
+        const resultsPage = new ResultsPage();
+    </script>
+</body>
+
+</html>

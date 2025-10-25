@@ -1,0 +1,17 @@
+# Configuration Template for Currency Converter Web App
+
+# Copy this file to .env and update the values
+
+# ExchangeRate-API Configuration
+# Get your free API key from: https://www.exchangerate-api.com/
+EXCHANGE_API_KEY=your_exchangerate_api_key_here
+
+# Flask Configuration
+FLASK_SECRET_KEY=your_secret_key_change_in_production
+
+# Database Configuration (optional)
+# SQLALCHEMY_DATABASE_URI=sqlite:///currency_tracker.db
+
+# Development Settings
+FLASK_ENV=development
+FLASK_DEBUG=True

@@ -1,0 +1,102 @@
+{
+    "python.defaultInterpreterPath": "python",
+    "python.terminal.activateEnvironment": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length=88",
+        "--target-version=py39"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.ruffEnabled": true,
+    "python.linting.ruffArgs": [
+        "--line-length=100",
+        "--target-version=py39"
+    ],
+    "python.linting.flake8Enabled": false,
+    "python.linting.pylintEnabled": false,
+    "python.linting.mypyEnabled": false,
+    "python.sortImports.args": [
+        "--profile=black",
+        "--line-length=88"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "--strict-markers",
+        "--doctest-modules",
+        "--doctest-glob=*.rst",
+        "--ignore=setup.py"
+    ],
+    "python.testing.cwd": "${workspaceFolder}",
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "files.associations": {
+        "*.rst": "restructuredtext",
+        "*.toml": "toml",
+        "pyproject.toml": "toml",
+        "setup.cfg": "ini"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll.ruff": true
+    },
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/build": true,
+        "**/dist": true,
+        "**/*.egg-info": true,
+        "**/htmlcov": true,
+        "**/.pytest_cache": true,
+        "**/.tox": true
+    },
+    "search.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/build": true,
+        "**/dist": true,
+        "**/*.egg-info": true,
+        "**/htmlcov": true,
+        "**/.pytest_cache": true,
+        "**/.tox": true,
+        "**/node_modules": true
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "restructuredtext.builtDocumentationPath": "doc/_build/html",
+    "restructuredtext.updateOnTextChanged": "throttle",
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "pyproject.toml"
+            ],
+            "url": "https://json.schemastore.org/pyproject.json"
+        }
+    ],
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
+    },
+    "markdown.preview.breaks": true,
+    "markdown.preview.linkify": true,
+    "editor.rulers": [
+        88,
+        100
+    ],
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 100,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "files.watcherExclude": {
+        "**/__pycache__/**": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/*.egg-info/**": true,
+        "**/htmlcov/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.tox/**": true
+    }
+}
