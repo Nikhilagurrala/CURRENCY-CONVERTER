@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Tracker - Currency Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text: #0f172a;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .add-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .form-control {
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .portfolio-item {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .crypto-trends {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .trend-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .trend-positive {
+            color: var(--success);
+        }
+
+        .trend-negative {
+            color: var(--danger);
+        }
+
+        .profit-positive {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .profit-negative {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .total-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-chart-pie"></i> Portfolio Tracker</h1>
+            <p>Track your currency and cryptocurrency investments</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="/" class="nav-btn">
+                <i class="fas fa-exchange-alt"></i> Converter
+            </a>
+            <a href="/results" class="nav-btn">
+                <i class="fas fa-chart-line"></i> Results
+            </a>
+            <a href="/portfolio" class="nav-btn" style="background: rgba(255, 255, 255, 0.3);">
+                <i class="fas fa-chart-pie"></i> Portfolio
+            </a>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-plus-circle"></i> Add to Portfolio</h3>
+            <form id="portfolioForm" class="add-form">
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select class="form-control" id="currencySelect" required>
+                        <option value="">Select Currency</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" step="0.000001" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Purchase Rate (USD)</label>
+                    <input type="number" class="form-control" id="purchaseRate" step="0.000001" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <input type="text" class="form-control" id="notes" placeholder="Optional notes">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <button type="submit" class="btn">
+                        <i class="fas fa-plus"></i> Add to Portfolio
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-chart-line"></i> Crypto Market Trends</h3>
+            <div class="crypto-trends" id="cryptoTrends">
+                <!-- Crypto trends will be loaded here -->
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-wallet"></i> Your Portfolio</h3>
+            <div class="total-value" id="totalValue">$0.00</div>
+            <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Portfolio items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PortfolioTracker {
+            constructor() {
+                this.userId = 'user_' + Math.random().toString(36).substr(2, 9);
+                this.currencies = [];
+                this.init();
+            }
+
+            async init() {
+                await this.loadCurrencies();
+                this.setupEventListeners();
+                this.loadPortfolio();
+                this.loadCryptoTrends();
+            }
+
+            async loadCurrencies() {
+                try {
+                    const response = await fetch('/api/currencies');
+                    this.currencies = await response.json();
+                    this.populateCurrencySelect();
+                } catch (error) {
+                    console.error('Failed to load currencies:', error);
+                }
+            }
+
+            populateCurrencySelect() {
+                const select = document.getElementById('currencySelect');
+                select.innerHTML = '<option value="">Select Currency</option>';
+
+                this.currencies.forEach(currency => {
+                    const option = document.createElement('option');
+                    option.value = currency.code;
+                    option.textContent = `${currency.code} - ${currency.name}`;
+                    select.appendChild(option);
+                });
+            }
+
+            setupEventListeners() {
+                document.getElementById('portfolioForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.addPortfolioItem();
+                });
+            }
+
+            async addPortfolioItem() {
+                const currencyCode = document.getElementById('currencySelect').value;
+                const amount = parseFloat(document.getElementById('amount').value);
+                const purchaseRate = parseFloat(document.getElementById('purchaseRate').value);
+                const notes = document.getElementById('notes').value;
+
+                if (!currencyCode || !amount || !purchaseRate) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/portfolio', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            user_id: this.userId,
+                            currency_code: currencyCode,
+                            amount: amount,
+                            purchase_rate: purchaseRate,
+                            notes: notes
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        alert('Portfolio item added successfully!');
+                        document.getElementById('portfolioForm').reset();
+                        this.loadPortfolio();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Network error. Please try again.');
+                }
+            }
+
+            async loadPortfolio() {
+                try {
+                    const response = await fetch(`/api/portfolio/${this.userId}`);
+                    const data = await response.json();
+
+                    if (data.portfolio) {
+                        this.displayPortfolio(data.portfolio, data.total_value_usd);
+                    }
+                } catch (error) {
+                    console.error('Failed to load portfolio:', error);
+                }
+            }
+
+            displayPortfolio(portfolio, totalValue) {
+                const grid = document.getElementById('portfolioGrid');
+                const totalElement = document.getElementById('totalValue');
+
+                totalElement.textContent = `Total Value: $${totalValue.toLocaleString()}`;
+
+                if (portfolio.length === 0) {
+                    grid.innerHTML = '<p style="text-align: center; color: var(--text-light); grid-column: 1/-1;">No portfolio items yet. Add some currencies to get started!</p>';
+                    return;
+                }
+
+                grid.innerHTML = '';
+
+                portfolio.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.className = 'portfolio-item';
+                    
+                    const profitClass = item.profit_loss_usd >= 0 ? 'profit-positive' : 'profit-negative';
+                    const profitIcon = item.profit_loss_usd >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+
+                    itemElement.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 style="color: var(--primary);">${item.currency_code}</h4>
+                            <span class="${profitClass}">
+                                <i class="fas ${profitIcon}"></i> ${item.profit_loss_percent.toFixed(2)}%
+                            </span>
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>Amount:</strong> ${item.amount.toLocaleString()}
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>Purchase Rate:</strong> $${item.purchase_rate.toFixed(6)}
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>Current Rate:</strong> $${item.current_rate ? item.current_rate.toFixed(6) : 'N/A'}
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>Current Value:</strong> $${item.current_value_usd.toLocaleString()}
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <strong>P&L:</strong> <span class="${profitClass}">$${item.profit_loss_usd.toLocaleString()}</span>
+                        </div>
+                        ${item.notes ? `<div style="margin-top: 1rem; font-style: italic; color: var(--text-light);">"${item.notes}"</div>` : ''}
+                    `;
+
+                    grid.appendChild(itemElement);
+                });
+            }
+
+            async loadCryptoTrends() {
+                try {
+                    const response = await fetch('/api/crypto-trends');
+                    const trends = await response.json();
+
+                    const trendsContainer = document.getElementById('cryptoTrends');
+                    trendsContainer.innerHTML = '';
+
+                    trends.forEach(trend => {
+                        const trendElement = document.createElement('div');
+                        trendElement.className = 'trend-item';
+
+                        const changeClass = trend.change_24h >= 0 ? 'trend-positive' : 'trend-negative';
+                        const changeIcon = trend.change_24h >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+
+                        trendElement.innerHTML = `
+                            <div style="font-weight: 600; margin-bottom: 0.5rem;">${trend.symbol}</div>
+                            <div style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">$${trend.price_usd.toLocaleString()}</div>
+                            <div class="${changeClass}">
+                                <i class="fas ${changeIcon}"></i> ${trend.change_24h.toFixed(2)}%
+                            </div>
+                        `;
+
+                        trendsContainer.appendChild(trendElement);
+                    });
+                } catch (error) {
+                    console.error('Failed to load crypto trends:', error);
+                }
+            }
+        }
+
+        // Initialize the portfolio tracker
+        const portfolioTracker = new PortfolioTracker();
+    </script>
+</body>
+</html>

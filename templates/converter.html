@@ -406,6 +406,104 @@
                 transform: translateY(0);
             }
         }
+
+        /* Tax Calculation Styles */
+        .tax-results {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .tax-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tax-header h3 {
+            color: var(--text);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tax-breakdown {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tax-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(37, 99, 235, 0.05);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .tax-item.total {
+            background: rgba(217, 119, 6, 0.1);
+            border-color: rgba(217, 119, 6, 0.2);
+        }
+
+        .tax-item.net {
+            background: rgba(5, 150, 105, 0.1);
+            border-color: rgba(5, 150, 105, 0.2);
+            font-weight: 600;
+        }
+
+        .tax-label {
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .tax-value {
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .tax-item.total .tax-value {
+            color: var(--warning);
+        }
+
+        .tax-item.net .tax-value {
+            color: var(--success);
+            font-size: 1.3rem;
+        }
+
+        .tax-info {
+            background: rgba(100, 116, 139, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .tax-details {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 
@@ -415,6 +513,18 @@
             <div class="header">
                 <h1><i class="fas fa-exchange-alt"></i> Currency Converter</h1>
                 <p>Convert your money with real-time exchange rates</p>
+            </div>
+
+            <div class="nav-buttons" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                <a href="/" class="nav-btn" style="background: rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-exchange-alt"></i> Converter
+                </a>
+                <a href="/results" class="nav-btn" style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-chart-line"></i> Results
+                </a>
+                <a href="/portfolio" class="nav-btn" style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-chart-pie"></i> Portfolio
+                </a>
             </div>
 
             <div class="error-message" id="errorMessage"></div>
@@ -446,6 +556,13 @@
                 </div>
             </form>
 
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label class="form-label">Exchange Location (for tax calculation)</label>
+                <select class="form-control" id="exchangeCountry" required>
+                    <option value="USA">United States</option>
+                </select>
+            </div>
+
             <button type="button" class="convert-btn" id="convertBtn">
                 <i class="fas fa-calculator"></i> Convert Currency
             </button>
@@ -453,6 +570,53 @@
             <div class="loading" id="loading">
                 <div class="spinner"></div>
                 <p>Converting your currency...</p>
+            </div>
+
+            <!-- Tax Calculation Results -->
+            <div class="tax-results" id="taxResults" style="display: none; margin-top: 2rem;">
+                <div class="tax-header">
+                    <h3><i class="fas fa-calculator"></i> Exchange Cost Breakdown</h3>
+                </div>
+
+                <div class="tax-breakdown">
+                    <div class="tax-item">
+                        <div class="tax-label">Gross Amount (Before Tax)</div>
+                        <div class="tax-value" id="grossAmount">0.00</div>
+                    </div>
+                    <div class="tax-item">
+                        <div class="tax-label">Exchange Tax</div>
+                        <div class="tax-value" id="exchangeTax">0.00</div>
+                    </div>
+                    <div class="tax-item">
+                        <div class="tax-label">Service Fee</div>
+                        <div class="tax-value" id="serviceFee">0.00</div>
+                    </div>
+                    <div class="tax-item total">
+                        <div class="tax-label">Total Fees</div>
+                        <div class="tax-value" id="totalFees">0.00</div>
+                    </div>
+                    <div class="tax-item net">
+                        <div class="tax-label">Net Amount (After Tax)</div>
+                        <div class="tax-value" id="netAmount">0.00</div>
+                    </div>
+                </div>
+
+                <div class="tax-info">
+                    <div class="tax-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Exchange Location:</span>
+                            <span class="detail-value" id="exchangeLocation">United States</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tax Rate:</span>
+                            <span class="detail-value" id="taxRate">0.0%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Service Fee Rate:</span>
+                            <span class="detail-value" id="serviceFeeRate">1.5%</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="stats-grid">
@@ -481,6 +645,7 @@
         class CurrencyConverter {
             constructor() {
                 this.currencies = [];
+                this.countries = [];
                 this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
                 this.conversionCount = parseInt(localStorage.getItem('conversionCount') || '0');
                 this.lastUpdate = localStorage.getItem('lastUpdate') || 'Never';
@@ -490,6 +655,7 @@
 
             async init() {
                 await this.loadCurrencies();
+                await this.loadCountries();
                 this.setupEventListeners();
                 this.updateStats();
                 this.loadPopularCurrencies();
@@ -503,6 +669,27 @@
                 } catch (error) {
                     this.showError('Failed to load currencies');
                 }
+            }
+
+            async loadCountries() {
+                try {
+                    const response = await fetch('/api/countries');
+                    this.countries = await response.json();
+                    this.populateCountrySelect();
+                } catch (error) {
+                    this.showError('Failed to load countries');
+                }
+            }
+
+            populateCountrySelect() {
+                const countrySelect = document.getElementById('exchangeCountry');
+                countrySelect.innerHTML = '';
+
+                this.countries.forEach(country => {
+                    const option = new Option(`${country.country_name} (${country.currency_code})`, country.country_code);
+                    if (country.country_code === 'USA') option.selected = true;
+                    countrySelect.add(option);
+                });
             }
 
             populateSelects() {
@@ -553,6 +740,7 @@
                 const amount = parseFloat(document.getElementById('amount').value);
                 const fromCurrency = document.getElementById('fromCurrency').value;
                 const toCurrency = document.getElementById('toCurrency').value;
+                const countryCode = document.getElementById('exchangeCountry').value;
 
                 if (!amount || amount <= 0) {
                     this.showError('Please enter a valid amount');
@@ -562,7 +750,8 @@
                 this.showLoading(true);
 
                 try {
-                    const response = await fetch('/api/convert', {
+                    // Calculate tax and fees
+                    const taxResponse = await fetch('/api/calculate-tax', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -570,22 +759,33 @@
                         body: JSON.stringify({
                             amount: amount,
                             from_currency: fromCurrency,
-                            to_currency: toCurrency
+                            to_currency: toCurrency,
+                            country_code: countryCode
                         })
                     });
 
-                    const data = await response.json();
+                    const taxData = await taxResponse.json();
 
-                    if (data.success) {
+                    if (taxData.success) {
                         // Store conversion data for results page
                         localStorage.setItem('conversionData', JSON.stringify({
                             amount: amount,
                             fromCurrency: fromCurrency,
                             toCurrency: toCurrency,
-                            result: data.result,
-                            rate: data.rate,
+                            result: taxData.net_amount,
+                            rate: taxData.exchange_rate,
+                            grossAmount: taxData.gross_amount,
+                            exchangeTax: taxData.exchange_tax,
+                            serviceFee: taxData.service_fee,
+                            totalTaxFee: taxData.total_tax_fee,
+                            netAmount: taxData.net_amount,
+                            taxRateInfo: taxData.tax_rate_info,
+                            countryCode: countryCode,
                             timestamp: new Date().toISOString()
                         }));
+
+                        // Display tax calculation results
+                        this.displayTaxResults(taxData);
 
                         this.updateConversionCount();
                         this.updateLastUpdate();
@@ -593,13 +793,32 @@
                         // Redirect to results page
                         window.location.href = '/results';
                     } else {
-                        this.showError(data.error || 'Conversion failed');
+                        this.showError(taxData.error || 'Tax calculation failed');
                     }
                 } catch (error) {
                     this.showError('Network error. Please try again.');
                 } finally {
                     this.showLoading(false);
                 }
+            }
+
+            displayTaxResults(data) {
+                const taxResults = document.getElementById('taxResults');
+
+                // Update tax breakdown
+                document.getElementById('grossAmount').textContent = data.gross_amount.toLocaleString();
+                document.getElementById('exchangeTax').textContent = data.exchange_tax.toLocaleString();
+                document.getElementById('serviceFee').textContent = data.service_fee.toLocaleString();
+                document.getElementById('totalFees').textContent = data.total_tax_fee.toLocaleString();
+                document.getElementById('netAmount').textContent = data.net_amount.toLocaleString();
+
+                // Update tax info
+                document.getElementById('exchangeLocation').textContent = data.tax_rate_info.country_name;
+                document.getElementById('taxRate').textContent = `${data.tax_rate_info.exchange_tax_rate}%`;
+                document.getElementById('serviceFeeRate').textContent = `${data.tax_rate_info.service_fee_rate}%`;
+
+                // Show tax results
+                taxResults.style.display = 'block';
             }
 
             swapCurrencies() {

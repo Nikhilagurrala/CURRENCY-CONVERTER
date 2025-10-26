@@ -399,23 +399,338 @@
         .trend-neutral {
             color: var(--text-light);
         }
+
+        /* Tax Breakdown Styles */
+        .tax-breakdown-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .tax-breakdown-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .tax-breakdown-header h3 {
+            color: var(--text);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tax-breakdown-header p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .tax-breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tax-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tax-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .tax-card.gross::before {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .tax-card.tax::before {
+            background: linear-gradient(90deg, var(--warning), #f59e0b);
+        }
+
+        .tax-card.fee::before {
+            background: linear-gradient(90deg, var(--danger), #ef4444);
+        }
+
+        .tax-card.total::before {
+            background: linear-gradient(90deg, var(--warning), var(--danger));
+        }
+
+        .tax-card.net::before {
+            background: linear-gradient(90deg, var(--success), #10b981);
+        }
+
+        .tax-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tax-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .tax-card.gross .tax-icon {
+            color: var(--primary);
+        }
+
+        .tax-card.tax .tax-icon {
+            color: var(--warning);
+        }
+
+        .tax-card.fee .tax-icon {
+            color: var(--danger);
+        }
+
+        .tax-card.total .tax-icon {
+            color: var(--warning);
+        }
+
+        .tax-card.net .tax-icon {
+            color: var(--success);
+        }
+
+        .tax-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .tax-label {
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tax-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .tax-card.gross .tax-value {
+            color: var(--primary);
+        }
+
+        .tax-card.tax .tax-value {
+            color: var(--warning);
+        }
+
+        .tax-card.fee .tax-value {
+            color: var(--danger);
+        }
+
+        .tax-card.total .tax-value {
+            color: var(--warning);
+        }
+
+        .tax-card.net .tax-value {
+            color: var(--success);
+            font-size: 2.2rem;
+        }
+
+        .tax-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .tax-info-card {
+            background: rgba(100, 116, 139, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .tax-info-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .tax-info-header h4 {
+            color: var(--text);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tax-info-content {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-light);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-weight: 600;
+            font-size: 1rem;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="results-card fade-in">
-            <button class="back-btn" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Back to Converter
-            </button>
+            <div class="nav-buttons" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                <a href="/" class="nav-btn" style="background: rgba(0, 240, 255, 0.2); border: 2px solid rgba(0, 240, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: var(--neon-blue); font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-exchange-alt"></i> Converter
+                </a>
+                <a href="/results" class="nav-btn" style="background: rgba(0, 240, 255, 0.3); border: 2px solid rgba(0, 240, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: var(--neon-blue); font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-chart-line"></i> Results
+                </a>
+                <a href="/portfolio" class="nav-btn" style="background: rgba(0, 240, 255, 0.2); border: 2px solid rgba(0, 240, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: var(--neon-blue); font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-chart-pie"></i> Portfolio
+                </a>
+            </div>
 
             <div class="header">
                 <h1><i class="fas fa-chart-line"></i> Conversion Results</h1>
+                <p>Your currency conversion breakdown</p>
+            </div>
+
+            <!-- Summary Help Box -->
+            <div class="summary-box">
+                <div class="summary-title">
+                    <i class="fas fa-info-circle"></i> What You're Looking At
+                </div>
+                <div class="summary-text">
+                    This page shows you exactly how much money you'll receive when exchanging currency at a real
+                    exchange location.
+                    The <strong style="color: var(--neon-blue);">Net Amount</strong> is what goes into your pocket after
+                    all taxes and fees are deducted.
+                </div>
             </div>
 
             <div class="conversion-result" id="conversionResult">
                 <div class="result-amount" id="resultAmount">0.00</div>
                 <div class="result-details" id="resultDetails">Loading conversion...</div>
+            </div>
+
+            <!-- Tax Breakdown Section -->
+            <div class="tax-breakdown-section" id="taxBreakdownSection" style="display: none;">
+                <div class="tax-breakdown-header">
+                    <h3><i class="fas fa-receipt"></i> Where Did Your Money Go?</h3>
+                    <p>See exactly how much was deducted and what you'll receive</p>
+                </div>
+
+                <div class="tax-breakdown-grid">
+                    <div class="tax-card gross">
+                        <div class="tax-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="tax-content">
+                            <div class="tax-label">💰 Before Fees</div>
+                            <div class="tax-value" id="grossAmountResult">0.00</div>
+                            <div class="tax-description">Your money before any deductions</div>
+                        </div>
+                    </div>
+
+                    <div class="tax-card tax">
+                        <div class="tax-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="tax-content">
+                            <div class="tax-label">📊 Exchange Tax</div>
+                            <div class="tax-value" id="exchangeTaxResult">0.00</div>
+                            <div class="tax-description" id="exchangeTaxRate">Government tax</div>
+                        </div>
+                    </div>
+
+                    <div class="tax-card fee">
+                        <div class="tax-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <div class="tax-content">
+                            <div class="tax-label">🏪 Service Fee</div>
+                            <div class="tax-value" id="serviceFeeResult">0.00</div>
+                            <div class="tax-description" id="serviceFeeRate">Exchange shop fee</div>
+                        </div>
+                    </div>
+
+                    <div class="tax-card total">
+                        <div class="tax-icon">
+                            <i class="fas fa-minus-circle"></i>
+                        </div>
+                        <div class="tax-content">
+                            <div class="tax-label">➖ Total Deducted</div>
+                            <div class="tax-value" id="totalFeesResult">0.00</div>
+                            <div class="tax-description">Everything taken from your money</div>
+                        </div>
+                    </div>
+
+                    <div class="tax-card net">
+                        <div class="tax-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="tax-content">
+                            <div class="tax-label">✅ YOU RECEIVE</div>
+                            <div class="tax-value" id="netAmountResult">0.00</div>
+                            <div class="tax-description">This is what goes in your pocket!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tax-info-card">
+                    <div class="tax-info-header">
+                        <h4><i class="fas fa-info-circle"></i> Exchange Details</h4>
+                    </div>
+                    <div class="tax-info-content">
+                        <div class="info-row">
+                            <span class="info-label">Exchange Location:</span>
+                            <span class="info-value" id="exchangeLocationResult">United States</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Tax Rate:</span>
+                            <span class="info-value" id="taxRateResult">0.0%</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Service Fee Rate:</span>
+                            <span class="info-value" id="serviceFeeRateResult">1.5%</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Minimum Fee:</span>
+                            <span class="info-value" id="minimumFeeResult">$5.00</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Maximum Fee:</span>
+                            <span class="info-value" id="maximumFeeResult">$50.00</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="rate-info">
@@ -517,11 +832,11 @@
             displayResults() {
                 if (!this.conversionData) return;
 
-                const { amount, fromCurrency, toCurrency, result, rate, timestamp } = this.conversionData;
+                const { amount, fromCurrency, toCurrency, result, rate, timestamp, grossAmount, exchangeTax, serviceFee, totalTaxFee, netAmount, taxRateInfo, countryCode } = this.conversionData;
 
-                // Display main result
-                document.getElementById('resultAmount').textContent = result.toLocaleString();
-                document.getElementById('resultDetails').textContent = `${amount} ${fromCurrency} = ${result} ${toCurrency}`;
+                // Display main result (now shows net amount after taxes)
+                document.getElementById('resultAmount').textContent = netAmount ? netAmount.toLocaleString() : result.toLocaleString();
+                document.getElementById('resultDetails').textContent = `${amount} ${fromCurrency} = ${netAmount ? netAmount.toLocaleString() : result.toLocaleString()} ${toCurrency} (after taxes)`;
 
                 // Display rate information
                 document.getElementById('exchangeRate').textContent = rate.toFixed(4);
@@ -529,7 +844,7 @@
                 document.getElementById('fromCurrency').textContent = fromCurrency;
                 document.getElementById('toCurrency').textContent = toCurrency;
                 document.getElementById('rateValue').textContent = rate.toFixed(4);
-                document.getElementById('convertedAmount').textContent = result.toLocaleString();
+                document.getElementById('convertedAmount').textContent = netAmount ? netAmount.toLocaleString() : result.toLocaleString();
 
                 // Display timing information
                 const conversionDate = new Date(timestamp);
@@ -537,8 +852,41 @@
                 document.getElementById('conversionTime').textContent = conversionDate.toLocaleTimeString();
                 document.getElementById('rateUpdateTime').textContent = conversionDate.toLocaleTimeString();
 
+                // Display tax breakdown if available
+                if (grossAmount && exchangeTax !== undefined && serviceFee !== undefined && totalTaxFee !== undefined && netAmount !== undefined && taxRateInfo) {
+                    this.displayTaxBreakdown(grossAmount, exchangeTax, serviceFee, totalTaxFee, netAmount, taxRateInfo);
+                }
+
                 // Update chart
                 this.updateChart();
+            }
+
+            displayTaxBreakdown(grossAmount, exchangeTax, serviceFee, totalTaxFee, netAmount, taxRateInfo) {
+                const taxSection = document.getElementById('taxBreakdownSection');
+
+                // Update tax breakdown values
+                document.getElementById('grossAmountResult').textContent = grossAmount.toLocaleString();
+                document.getElementById('exchangeTaxResult').textContent = exchangeTax.toLocaleString();
+                document.getElementById('serviceFeeResult').textContent = serviceFee.toLocaleString();
+                document.getElementById('totalFeesResult').textContent = totalTaxFee.toLocaleString();
+                document.getElementById('netAmountResult').textContent = netAmount.toLocaleString();
+
+                // Update tax rates with better descriptions
+                const exchangeTaxElem = document.getElementById('exchangeTaxRate');
+                exchangeTaxElem.textContent = `Rate: ${taxRateInfo.exchange_tax_rate}%`;
+
+                const serviceFeeElem = document.getElementById('serviceFeeRate');
+                serviceFeeElem.textContent = `Rate: ${taxRateInfo.service_fee_rate}%`;
+
+                // Update tax info
+                document.getElementById('exchangeLocationResult').textContent = taxRateInfo.country_name;
+                document.getElementById('taxRateResult').textContent = `${taxRateInfo.exchange_tax_rate}%`;
+                document.getElementById('serviceFeeRateResult').textContent = `${taxRateInfo.service_fee_rate}%`;
+                document.getElementById('minimumFeeResult').textContent = `${taxRateInfo.minimum_fee.toLocaleString()}`;
+                document.getElementById('maximumFeeResult').textContent = `${taxRateInfo.maximum_fee ? taxRateInfo.maximum_fee.toLocaleString() : 'No limit'}`;
+
+                // Show tax breakdown section
+                taxSection.style.display = 'block';
             }
 
             setupEventListeners() {
