@@ -122,19 +122,33 @@
         }
 
         .converter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .amount-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .currency-row {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             gap: 2rem;
             align-items: end;
-            margin-bottom: 2rem;
         }
 
-        .converter-form .form-group {
+        .currency-row .form-group {
             min-width: 0;
             width: 100%;
         }
 
-        .converter-form .form-group select {
+        .currency-row .form-group select {
             width: 100%;
             min-width: 0;
             box-sizing: border-box;
@@ -385,7 +399,7 @@
         }
 
         @media (max-width: 768px) {
-            .converter-form {
+            .currency-row {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
@@ -401,6 +415,10 @@
 
             .converter-card {
                 padding: 2rem;
+            }
+
+            .amount-group {
+                max-width: 100%;
             }
         }
 
@@ -529,13 +547,16 @@
             </div>
 
             <div class="nav-buttons" style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
-                <a href="/" class="nav-btn" style="background: rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                <a href="/" class="nav-btn"
+                    style="background: rgba(255, 255, 255, 0.3); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-exchange-alt"></i> Converter
                 </a>
-                <a href="/results" class="nav-btn" style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                <a href="/results" class="nav-btn"
+                    style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-chart-line"></i> Results
                 </a>
-                <a href="/portfolio" class="nav-btn" style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                <a href="/portfolio" class="nav-btn"
+                    style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 0.75rem 1.5rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-chart-pie"></i> Portfolio
                 </a>
             </div>
@@ -544,28 +565,30 @@
             <div class="success-message" id="successMessage"></div>
 
             <form class="converter-form" id="converterForm">
-                <div class="form-group">
+                <div class="form-group amount-group">
                     <label class="form-label">Amount to Convert</label>
                     <input type="number" class="form-control" id="amount" value="100" min="0" step="0.01" required
                         placeholder="Enter amount">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">From Currency</label>
-                    <select class="form-control" id="fromCurrency" required>
-                        <option value="USD">USD - US Dollar</option>
-                    </select>
-                </div>
+                <div class="currency-row">
+                    <div class="form-group">
+                        <label class="form-label">From Currency</label>
+                        <select class="form-control" id="fromCurrency" required>
+                            <option value="USD">USD - US Dollar</option>
+                        </select>
+                    </div>
 
-                <button type="button" class="swap-btn" id="swapBtn">
-                    <i class="fas fa-exchange-alt"></i>
-                </button>
+                    <button type="button" class="swap-btn" id="swapBtn">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
 
-                <div class="form-group">
-                    <label class="form-label">To Currency</label>
-                    <select class="form-control" id="toCurrency" required>
-                        <option value="EUR">EUR - Euro</option>
-                    </select>
+                    <div class="form-group">
+                        <label class="form-label">To Currency</label>
+                        <select class="form-control" id="toCurrency" required>
+                            <option value="EUR">EUR - Euro</option>
+                        </select>
+                    </div>
                 </div>
             </form>
 
