@@ -208,4 +208,3 @@ For support, email support@currencyconverter.com or create an issue in the GitHu
 
 ---
 
-**Made with ❤️ by [Kausiq000](https://github.com/Kausiq000)**
