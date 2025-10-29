@@ -1,6 +1,19 @@
 HOW TO RUN THE CURRENCY CONVERTER WEBSITE
 ==========================================
 
+LIVE WEBSITE (ONE-CLICK OPEN)
+=============================
+
+Link: <Your live URL will appear here after deployment>
+
+How to get the live link:
+1. Go to `https://render.com` and sign in (free plan works)
+2. Click "New +" → "Web Service"
+3. Connect your GitHub and pick `Nikhilagurrala/CURRENCY-CONVERTER`
+4. Render auto-detects settings via `render.yaml`; click "Create Web Service"
+5. Wait for deploy to finish → copy the URL (e.g., `https://currency-converter.onrender.com`)
+6. Paste that URL above and in your presentation
+
 STEP-BY-STEP INSTRUCTIONS TO RUN THE WEBSITE
 ============================================
 
