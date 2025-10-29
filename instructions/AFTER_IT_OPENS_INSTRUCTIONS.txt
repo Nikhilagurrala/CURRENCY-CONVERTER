@@ -1,0 +1,32 @@
+AFTER IT OPENS: HOW TO USE THE WEBSITE
+=====================================
+
+Live Website
+- https://currency-converter-yq43.onrender.com/
+
+Repository
+- https://github.com/Nikhilagurrala/CURRENCY-CONVERTER
+
+1) Converter (Home)
+- Amount: Enter how much you want to convert
+- From/To: Pick the currencies
+- Swap (↔): Flip From and To
+- Exchange Location: Select where you’ll exchange (for taxes/fees)
+- Convert Currency: Click to calculate and proceed to results
+
+2) Results
+- Main Result: Net amount you receive after taxes/fees
+- Breakdown: Before Fees, Exchange Tax, Service Fee, Total Deducted, You Receive
+- Details: Country, tax rate, service fee rate, fee limits
+- Trend Chart: Switch 7/14/30 days
+- New Conversion: Start again
+
+3) Portfolio
+- Add to Portfolio: Choose currency, enter amount, purchase rate (USD), optional notes, then add
+- Crypto Market Trends: View live prices and 24h change
+- Your Portfolio: See total value, current rate, and P&L
+
+Tips
+- If rates don’t load, refresh the page and check your connection
+- Favorites and stats are stored locally in your browser
+- Taxes and fees depend on Exchange Location and target currency
